@@ -5,7 +5,7 @@ const getExpense = async (req, res) => {
   res.send("get an expense");
 };
 const createExpense = async (req, res) => {
-  res.send("create  expense");
+  res.json(req.user);
 };
 const updateExpense = async (req, res) => {
   res.send("update expense");
