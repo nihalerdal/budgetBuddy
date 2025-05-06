@@ -33,7 +33,7 @@ const ExpenseSchema = new mongoose.Schema(
         "Personal",
         "Other",
       ],
-      required: true,
+      required: [true, "Please provide a subcategory"],
     },
     subCategory: {
       type: String,
@@ -67,10 +67,10 @@ const ExpenseSchema = new mongoose.Schema(
         "Cosmetics",
         "Other",
       ],
-      required: true,
+      required: [true, "Please provide a subcategory"],
     },
     createdBy: {
-      type: mongoose.Mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: [true, "Please provide a user"],
     },
