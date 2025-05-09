@@ -2,9 +2,17 @@ const Expense = require("../models/Expense");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
-const getAllExpenses = async (req, res) => {
-  res.send("get all expenses");
+const getAllExpenses = async (req, res, next) => {
+  try {
+    const expenses = await Expense.find({ createdBy: req.user.userId });
+    res
+      .status(StatusCodes.OK)
+      .json({ expenses, Expense, count: expenses.length });
+  } catch (error) {
+    next(error);
+  }
 };
+
 const getExpense = async (req, res) => {
   res.send("get an expense");
 };
