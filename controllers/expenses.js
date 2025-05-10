@@ -42,9 +42,35 @@ const createExpense = async (req, res, next) => {
   }
 };
 
-const updateExpense = async (req, res) => {
-  res.send("update expense");
+const updateExpense = async (req, res, next) => {
+  try {
+    const { title, amount, date, description, mainCategory, subCategory } =
+      req.body;
+    const { userId } = req.user;
+    const { id: expenseId } = req.params;
+
+    if (!title || !amount || !mainCategory || !subCategory) {
+      throw new BadRequestError(
+        "Title, amount, mainCategory, or subCategory can not be empty"
+      );
+    }
+
+    const updatedExpense = await Expense.findOneAndUpdate(
+      { _id: expenseId, createdBy: userId },
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedExpense) {
+      throw new NotFoundError(`No expense with the id ${expenseId}`);
+    }
+
+    res.status(StatusCodes.OK).json({ updatedExpense });
+  } catch (error) {
+    next(error);
+  }
 };
+
 const deleteExpense = async (req, res) => {
   res.send("delete expense");
 };
