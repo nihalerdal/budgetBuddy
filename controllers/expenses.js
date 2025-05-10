@@ -37,7 +37,7 @@ const createExpense = async (req, res, next) => {
     req.body.createdBy = req.user.userId;
     const expense = await Expense.create(req.body);
     res.status(StatusCodes.CREATED).json({ expense });
-  } catch {
+  } catch (error){
     next(error);
   }
 };
@@ -71,8 +71,25 @@ const updateExpense = async (req, res, next) => {
   }
 };
 
-const deleteExpense = async (req, res) => {
-  res.send("delete expense");
+const deleteExpense = async (req, res, next) => {
+  try {
+    const {
+      user: { userId },
+      params: { id: expenseId },
+    } = req;
+
+    const expense = await Expense.findByIdAndRemove({
+      _id: expenseId,
+      createdBy: userId,
+    });
+    if (!expense) {
+      throw new NotFoundError(`No expense with the id ${expenseId}`);
+    }
+
+    res.status(StatusCodes.OK).send();
+  } catch (error){
+    next(error)
+  }
 };
 
 module.exports = {
