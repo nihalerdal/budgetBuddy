@@ -2,16 +2,36 @@ const Expense = require("../models/Expense");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
-const getAllExpenses = async (req, res) => {
-  const expenses = await Expense.find({ createdBy: req.user.userId }).sort(
-    "createdAt"
-  );
-  res.status(StatusCodes.OK).json({ expenses, count: expenses.length });
+const getAllExpenses = async (req, res, next) => {
+  try {
+    const expenses = await Expense.find({ createdBy: req.user.userId }).sort(
+      "createdAt"
+    );
+    res.status(StatusCodes.OK).json({ expenses, count: expenses.length });
+  } catch (error) {
+    next(error);
+  }
 };
 
-const getExpense = async (req, res) => {
-  res.send("get an expense");
+const getExpense = async (req, res, next) => {
+  try {
+    const {
+      user: { userId },
+      params: { id: expenseId },
+    } = req;
+    const expense = await Expense.findOne({
+      _id: expenseId,
+      createdBy: userId,
+    });
+    if (!expense) {
+      throw new NotFoundError(`No expense with id ${expenseId}`);
+    }
+    res.status(StatusCodes.OK).json({ expense });
+  } catch (error) {
+    next(error);
+  }
 };
+
 const createExpense = async (req, res, next) => {
   try {
     req.body.createdBy = req.user.userId;
@@ -21,6 +41,7 @@ const createExpense = async (req, res, next) => {
     next(error);
   }
 };
+
 const updateExpense = async (req, res) => {
   res.send("update expense");
 };
