@@ -78,7 +78,7 @@ const renderExpenses = (expenses) => {
       <td>${expense.subCategory}</td>
       <td>
         <button class="editButton" data-id="${expense._id}">Edit</button>
-        <button class="deleteButton" data-id="${expense._id}">Delete</button>
+        <button class="delete-button" data-id="${expense._id}">Delete</button>
       </td>
     `;
 

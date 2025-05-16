@@ -78,7 +78,7 @@ const deleteExpense = async (req, res, next) => {
       params: { id: expenseId },
     } = req;
 
-    const expense = await Expense.findOneAndRemove({
+    const expense = await Expense.findOneAndDelete({
       _id: expenseId,
       createdBy: userId,
     });
