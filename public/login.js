@@ -78,5 +78,9 @@ export const handleLogin = () => {
 export const showLogin = () => {
   email.value = null;
   password.value = null;
+  const introSection = document.getElementById("intro-section");
+  if (introSection) {
+    introSection.style.display = "none"; 
+  }
   setDiv(loginDiv);
 };

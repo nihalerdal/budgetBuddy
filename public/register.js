@@ -80,5 +80,9 @@ export const showRegister = () => {
   email1.value = null;
   password1.value = null;
   password2.value = null;
+  const introSection = document.getElementById("intro-section");
+  if (introSection) {
+    introSection.style.display = "none";
+  }
   setDiv(registerDiv);
 };
