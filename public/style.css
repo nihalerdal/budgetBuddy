@@ -111,7 +111,11 @@ button:hover {
 #logon-button,
 #logon-cancel,
 #register-button,
-#register-cancel {
+#register-cancel,
+#add-expense,
+#logoff,
+#adding-expense,
+#edit-cancel {
   background-color: #314453;
   color: white;
   border: none;
@@ -125,7 +129,11 @@ button:hover {
 #logon-button:hover,
 #logon-cancel:hover,
 #register-button:hover,
-#register-cancel:hover {
+#register-cancel:hover,
+#add-expense:hover,
+#logoff:hover,
+#adding-expense:hover,
+#edit-cancel:hover {
   background-color: white;
   color: #314453;
 }

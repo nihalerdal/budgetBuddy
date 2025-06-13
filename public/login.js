@@ -21,11 +21,12 @@ export const handleLogin = () => {
   const logonCancel = document.getElementById("logon-cancel");
   const logoff = document.getElementById("logoff");
   const expensesTable = document.getElementById("expenses-table");
-  const expensesTableHeader = document.getElementById("expenses-header");
+  const expensesTableHeader = document.getElementById("expenses-table-header");
 
   loginDiv.addEventListener("click", async (e) => {
     if (inputEnabled && e.target.nodeName === "BUTTON") {
       if (e.target === logonButton) {
+        if (!inputEnabled) return; 
         enableInput(false);
 
         try {
@@ -42,7 +43,9 @@ export const handleLogin = () => {
 
           const data = await response.json();
           if (response.status === 200) {
-            message.textContent = `Logon successful.  Welcome ${data.user.name}`;
+                if (message) {
+                  message.textContent = `Logon successful. Welcome ${data.user.name}`;
+                }
             setToken(data.token);
 
             email.value = "";
@@ -50,11 +53,15 @@ export const handleLogin = () => {
 
             showExpenses();
           } else {
-            message.textContent = data.msg;
+            if (message) {
+              message.textContent = data.msg;
+            }
           }
         } catch (err) {
           console.error(err);
-          message.textContent = "A communications error occurred.";
+         if (message) {
+           message.textContent = "A communications error occurred.";
+         }
         }
 
         enableInput(true);
@@ -62,14 +69,15 @@ export const handleLogin = () => {
         email.value = "";
         password.value = "";
         showLoginRegister();
-      } else if (e.target === logoff) {
-        setToken(null);
+      // } else if (e.target === logoff) {
+      //   setToken(null);
 
-        message.textContent = "You have been logged off.";
+      //   message.textContent = "You have been logged off.";
 
-        expensesTable.replaceChildren([expensesTableHeader]);
+      //   expensesTable.replaceChildren([expensesTableHeader]);
 
-        showLoginRegister();
+      //   showLoginRegister();
+      // }
       }
     }
   });

@@ -6,7 +6,7 @@ import {
   setToken,
 } from "./index.js";
 import { showLoginRegister } from "./loginRegister.js";
-import { showExpenses } from "./expenses.js"; 
+import { showExpenses } from "./expenses.js";
 
 let registerDiv = null;
 let name = null;
@@ -46,7 +46,9 @@ export const handleRegister = () => {
 
             const data = await response.json();
             if (response.status === 201) {
-              message.textContent = `Registration successful. Welcome ${data.user.name}`;
+              if (message) {
+                message.textContent = `Registration successful. Welcome ${data.user.name}`;
+              }
               setToken(data.token);
 
               name.value = "";
@@ -56,11 +58,14 @@ export const handleRegister = () => {
 
               showExpenses();
             } else {
-              message.textContent = data.msg;
+              if (message) {
+                message.textContent = data.msg;
+              }
             }
           } catch (err) {
-            console.error(err);
+            if (message) {
             message.textContent = "A communications error occurred.";
+            }
           }
 
           enableInput(true);

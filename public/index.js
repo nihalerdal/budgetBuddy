@@ -17,11 +17,12 @@ export const enableInput = (state) => {
 
 export let token = null;
 export const setToken = (value) => {
-  token = value;
-  if (value) {
-    localStorage.setItem("token", value);
-  } else {
+  if (!value || value === "null") {
+    token = null;
     localStorage.removeItem("token");
+  } else {
+    token = value;
+    localStorage.setItem("token", value);
   }
 };
 
@@ -34,7 +35,12 @@ import { handleAddEdit } from "./addEdit.js";
 import { handleRegister } from "./register.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  token = localStorage.getItem("token");
+  const storedToken = localStorage.getItem("token");
+  if (storedToken && storedToken !== "null") {
+    setToken(storedToken);
+  } else {
+    setToken(null);
+  }
   message = document.getElementById("message");
   handleLoginRegister();
   handleLogin();
@@ -67,7 +73,7 @@ document.addEventListener("click", async (e) => {
         if (res.ok) {
           document.getElementById("message").textContent =
             "Expense deleted successfully.";
-          showExpenses(); 
+          showExpenses();
         } else {
           const data = await res.json();
           document.getElementById("message").textContent =
@@ -78,5 +84,22 @@ document.addEventListener("click", async (e) => {
         document.getElementById("message").textContent = "An error occurred.";
       }
     }
+  } else if (e.target.id === "add-expense") {
+    handleAddEdit.showAddForm?.() || console.log("Add Expense clicked");
+  } else if (e.target.id === "logoff") {
+    setToken(null);
+    if (message) {
+      message.textContent = "You have been logged off.";
+    }
+
+    const expensesTable = document.getElementById("expenses-table");
+    const expensesTableHeader = document.getElementById(
+      "expenses-table-header"
+    );
+    if (expensesTable && expensesTableHeader) {
+      expensesTable.replaceChildren(expensesTableHeader);
+    }
+
+    showLoginRegister();
   }
 });

@@ -73,11 +73,15 @@ export const handleAddEdit = () => {
 
             showExpenses();
           } else {
+             if (message){
             message.textContent = result.msg || "Failed to save expense.";
+             }
           }
         } catch (err) {
           console.log(err);
+          if (message){
           message.textContent = "A communication error occurred.";
+        }
         }
 
         enableInput(true);
@@ -90,7 +94,9 @@ export const handleAddEdit = () => {
 };
 
 export const showAddEdit = async (expenseId) => {
-  message.textContent = "";
+  if (message) {
+    message.textContent = "";
+  }
 
   if (!expenseId) {
     // Add mode

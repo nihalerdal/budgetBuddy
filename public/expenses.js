@@ -25,8 +25,11 @@ export const handleExpenses = () => {
       if (e.target === addExpense) {
         showAddEdit(null); 
       } else if (e.target === logoff) {
+        setToken(null);
+         message.textContent = "You have been logged off.";
+         expensesTable.replaceChildren(expensesTableHeader);
         showLoginRegister(); 
-      } else if (e.target.classList.contains("editButton")) {
+      } else if (e.target.classList.contains("edit-button")) {
         message.textContent = "";
         showAddEdit(e.target.dataset.id);
       }
@@ -77,7 +80,7 @@ const renderExpenses = (expenses) => {
       <td>${expense.mainCategory}</td>
       <td>${expense.subCategory}</td>
       <td>
-        <button class="editButton" data-id="${expense._id}">Edit</button>
+        <button class="edit-button" data-id="${expense._id}">Edit</button>
         <button class="delete-button" data-id="${expense._id}">Delete</button>
       </td>
     `;
