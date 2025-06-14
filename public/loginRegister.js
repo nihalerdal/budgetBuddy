@@ -33,5 +33,4 @@ export const showLoginRegister = () => {
   if (registerDiv) registerDiv.style.display = "none";
   if (logonRegister) logonRegister.style.display = "block";
   
-  setDiv(loginRegisterDiv);
 };

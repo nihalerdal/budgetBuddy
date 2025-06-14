@@ -11,7 +11,16 @@
   <body>
     <h1>BudgetBuddy</h1>
     <hr />
-    <div id="intro-section" style="position: relative; text-align: left; margin: 20px auto; max-width: 90%;">
+    <p id="message" style="text-align: center; color: red"></p>
+    <div
+      id="intro-section"
+      style="
+        position: relative;
+        text-align: left;
+        margin: 20px auto;
+        max-width: 90%;
+      "
+    >
       <img
         src="assets/pexels-tima-miroshnichenko-5912581.jpg"
         alt="Budget Analysis"
@@ -22,43 +31,42 @@
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         "
       />
-      <div style="
-      position: absolute;
-      top: 40%;
-      right: 5%;
-      transform: translateY(-50%);
-      color: white;
-      padding: 20px;
-      max-width: 500px;
-      border-radius: 8px;
-      font-size: 2rem;
-      line-height: 1.4;
-      text-align: left;
-    ">
-        <p style="margin-top: 0;">
-      Track your daily expenses,<br />
-      stay on top of your budget,<br />
-      and gain full control over your finances.
-    </p>
+      <div
+        style="
+          position: absolute;
+          top: 40%;
+          right: 5%;
+          transform: translateY(-50%);
+          color: white;
+          padding: 20px;
+          max-width: 500px;
+          border-radius: 8px;
+          font-size: 2rem;
+          line-height: 1.4;
+          text-align: left;
+        "
+      >
+        <p style="margin-top: 0">
+          Track your daily expenses,<br />
+          stay on top of your budget,<br />
+          and gain full control over your finances.
+        </p>
 
-    <p style="margin-bottom: 16px;">
-      Sign up or log in to get started!
-    </p>
+        <p style="margin-bottom: 16px">Sign up or log in to get started!</p>
         <div id="logon-register" style="display: none">
-      <button type="button" id="logon">Login</button>
-      <button type="button" id="register">Sign Up</button>
-    </div>
-  </div>
+          <button type="button" id="logon">Login</button>
+          <button type="button" id="register">Sign Up</button>
+        </div>
+      </div>
     </div>
 
-
-    <div id="logon-div" style="display: none" >
-      <form >
-        <div style="max-width:480px">
+    <div id="logon-div" style="display: none">
+      <form>
+        <div style="max-width: 480px">
           <label for="email">Email:</label>
           <input type="email" id="email" />
         </div>
-        <div style="max-width:480px">
+        <div style="max-width: 480px">
           <label for="password">Password:</label>
           <input type="password" id="password" />
         </div>
@@ -69,19 +77,19 @@
 
     <div id="register-div" style="display: none">
       <form>
-        <div style="max-width:480px">
+        <div style="max-width: 480px">
           <label for="name">Name:</label>
           <input type="text" id="name" />
         </div>
-        <div style="max-width:480px">
+        <div style="max-width: 480px">
           <label for="email1">Email:</label>
           <input type="email" id="email1" />
         </div>
-        <div style="max-width:480px">
+        <div style="max-width: 480px">
           <label for="password1">Password:</label>
           <input type="password" id="password1" />
         </div>
-        <div style="max-width:480px">
+        <div style="max-width: 480px">
           <label for="password2">Verify Password:</label>
           <input type="password" id="password2" />
         </div>
@@ -93,27 +101,19 @@
     <div id="expenses" style="display: none">
       <p id="expenses-message"></p>
       <table id="expenses-table">
-        <tr id="expenses-table-header">
-          <th>Title</th>
-          <th>Amount</th>
-          <th>Date</th>
-          <th>Main Category</th>
-          <th>Sub Category</th>
-          <th>Description</th>
-          <th>Edit</th>
-          <th>Delete</th>
-        </tr>
-
-        <tr>
-          <td>Example Co.</td>
-          <td>1000</td>
-          <td>2025-05-15</td>
-          <td>Housing</td>
-          <td>Rent</td>
-          <td>Monthly rent payment</td>
-          <td><button class="edit-button" data-id="123">Edit</button></td>
-          <td><button class="delete-button" data-id="123">Delete</button></td>
-        </tr>
+        <thead>
+          <tr id="expenses-table-header">
+            <th>Title</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Main Category</th>
+            <th>Sub Category</th>
+            <th>Description</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="expenses-tbody"></tbody>
       </table>
       <button type="button" id="add-expense">Add Expense</button>
       <button type="button" id="logoff">Log off</button>

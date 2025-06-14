@@ -12,23 +12,26 @@ import { showAddEdit } from "./addEdit.js";
 let expensesDiv = null;
 let expensesTable = null;
 let expensesTableHeader = null;
+let expensesTbody = null;
 
 export const handleExpenses = () => {
   expensesDiv = document.getElementById("expenses");
-  const logoff = document.getElementById("logoff");
-  const addExpense = document.getElementById("add-expense");
   expensesTable = document.getElementById("expenses-table");
   expensesTableHeader = document.getElementById("expenses-table-header");
+  expensesTbody = document.getElementById("expenses-tbody");
+
+  const logoff = document.getElementById("logoff");
+  const addExpense = document.getElementById("add-expense");
 
   expensesDiv.addEventListener("click", (e) => {
     if (inputEnabled && e.target.nodeName === "BUTTON") {
       if (e.target === addExpense) {
-        showAddEdit(null); 
+        showAddEdit(null);
       } else if (e.target === logoff) {
         setToken(null);
-         message.textContent = "You have been logged off.";
-         expensesTable.replaceChildren(expensesTableHeader);
-        showLoginRegister(); 
+        message.textContent = "You have been logged off.";
+        if (expensesDiv) expensesDiv.style.display = "none";
+        showLoginRegister();
       } else if (e.target.classList.contains("edit-button")) {
         message.textContent = "";
         showAddEdit(e.target.dataset.id);
@@ -39,7 +42,7 @@ export const handleExpenses = () => {
 
 export const showExpenses = async () => {
   setDiv(expensesDiv);
-
+  expensesTbody = document.getElementById("expenses-tbody");
   try {
     const res = await fetch("/api/v1/expenses", {
       headers: {
@@ -54,17 +57,27 @@ export const showExpenses = async () => {
       return;
     }
 
+    console.log("Fetched expenses:", data.expenses);
     renderExpenses(data.expenses);
   } catch (err) {
+    console.error(err);
     message.textContent = "Server error.";
   }
 };
 
 const renderExpenses = (expenses) => {
-  expensesTable.innerHTML = "";
+  const tbody = document.getElementById("expenses-tbody");
+  console.log("Rendering expenses:", expenses);
+
+  if (!expensesTbody) {
+    console.error("Table body (expenses-tbody) not found!");
+    return;
+  }
+
+  expensesTbody.innerHTML = "";
 
   if (!expenses.length) {
-    expensesTable.innerHTML = "<tr><td colspan='6'>No expenses found</td></tr>";
+    expensesTbody.innerHTML = "<tr><td colspan='8'>No expenses found</td></tr>";
     return;
   }
 
@@ -79,12 +92,14 @@ const renderExpenses = (expenses) => {
       }</td>
       <td>${expense.mainCategory}</td>
       <td>${expense.subCategory}</td>
-      <td>
-        <button class="edit-button" data-id="${expense._id}">Edit</button>
-        <button class="delete-button" data-id="${expense._id}">Delete</button>
-      </td>
+      <td>${expense.description || ""}</td> 
+      <td><button class="edit-button" data-id="${
+        expense._id
+      }">Edit</button></td>
+      <td><button class="delete-button" data-id="${
+        expense._id
+      }">Delete</button></td>
     `;
-
-    expensesTable.appendChild(row);
+    expensesTbody.appendChild(row);
   });
 };

@@ -57,6 +57,9 @@ export const handleRegister = () => {
               password2.value = "";
 
               showExpenses();
+              if (introSection) {
+                introSection.style.display = "block";
+              }
             } else {
               if (message) {
                 message.textContent = data.msg;
@@ -64,7 +67,7 @@ export const handleRegister = () => {
             }
           } catch (err) {
             if (message) {
-            message.textContent = "A communications error occurred.";
+              message.textContent = "A communications error occurred.";
             }
           }
 

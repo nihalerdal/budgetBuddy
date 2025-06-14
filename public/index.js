@@ -1,10 +1,14 @@
 let activeDiv = null;
 
 export const setDiv = (newDiv) => {
-  if (newDiv !== activeDiv) {
-    if (activeDiv) {
-      activeDiv.style.display = "none";
-    }
+  console.log("Inside setDiv. Current activeDiv:", activeDiv);
+  console.log("New div passed:", newDiv);
+
+  if (activeDiv && activeDiv !== newDiv) {
+    activeDiv.style.display = "none";
+  }
+
+  if (newDiv) {
     newDiv.style.display = "block";
     activeDiv = newDiv;
   }
@@ -31,7 +35,7 @@ export let message = null;
 import { showExpenses, handleExpenses } from "./expenses.js";
 import { showLoginRegister, handleLoginRegister } from "./loginRegister.js";
 import { handleLogin } from "./login.js";
-import { handleAddEdit } from "./addEdit.js";
+import { handleAddEdit , showAddEdit} from "./addEdit.js";
 import { handleRegister } from "./register.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -73,7 +77,7 @@ document.addEventListener("click", async (e) => {
         if (res.ok) {
           document.getElementById("message").textContent =
             "Expense deleted successfully.";
-          showExpenses();
+          await showExpenses();
         } else {
           const data = await res.json();
           document.getElementById("message").textContent =
@@ -85,7 +89,7 @@ document.addEventListener("click", async (e) => {
       }
     }
   } else if (e.target.id === "add-expense") {
-    handleAddEdit.showAddForm?.() || console.log("Add Expense clicked");
+     await showAddEdit(); 
   } else if (e.target.id === "logoff") {
     setToken(null);
     if (message) {
