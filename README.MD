@@ -1,3 +1,9 @@
+# Budget Buddy 💰
+
+A full-stack expense tracking application that allows users to manage their budget by adding, editing, and deleting expenses.
+
+🌐 Live: [https://expense-tracker-gjuu.onrender.com](https://expense-tracker-gjuu.onrender.com)
+---
 #### Setup
 
 ```bash
