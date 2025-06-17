@@ -10,13 +10,13 @@ A full-stack expense tracking application that allows users to manage their budg
 npm install && npm start
 ```
 
-####🌱 Environment Setup
+#### 🌱 Environment Setup
 1.Create a .env file in the root directory.
 2.Add your MongoDB connection string:
 ```
 MONGO_URI=your_mongo_connection_string
 ```
-####🧩 Features
+#### 🧩 Features
 - User Authentication (Register & Login)
 - Add, Edit, and Delete Expenses
 - Filter by Category and Date
