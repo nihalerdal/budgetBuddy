@@ -1,5 +1,7 @@
 require("dotenv").config();
 require("express-async-errors");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
 
 //extra security packages
 const helmet = require("helmet");
@@ -10,6 +12,10 @@ const ratelimiter = require("express-rate-limit");
 const express = require("express");
 const app = express();
 app.use(express.static("public"));
+
+//swagger
+const swaggerDocument = YAML.load("./swagger.yaml");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //connectDB
 const connectDB = require("./db/connect");

@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  title: Expense Tracker API
+  version: "1.0.0"
+  description: API documentation for Expense Tracker app
+
+servers:
+  - url: http://localhost:3000/api/v1
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        201:
+          description: User registered successfully
+        400:
+          description: Bad request
+
+  /auth/login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Successful login
+        401:
+          description: Unauthorized
+
+  /expenses:
+    get:
+      summary: Get all expenses
+      responses:
+        200:
+          description: List of expenses
+    post:
+      summary: Create a new expense
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+               required:
+                - title
+                - amount
+                - mainCategory
+                - subCategory
+                - date
+               properties:
+                title:
+                  type: string
+                amount:
+                  type: number
+                mainCategory:
+                  type: string
+                subCategory:
+                  type: string
+                date:
+                  type: string
+                  format: date
+                description:
+                  type: string
+            example:
+              title: "Lunch"
+              amount: 12.5
+              date: "2025-05-23"
+              description: "Lunch with colleagues"
+              mainCategory: "Food"
+              subCategory: "Restaurant"
+      responses:
+        201:
+          description: Expense created
+
+  /expenses/{id}:
+    get:
+      summary: Get expense by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Expense details
+        404:
+          description: Expense not found
+    delete:
+      summary: Delete expense by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Expense deleted
+    patch:
+      summary: Update expense by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                category:
+                  type: string
+                date:
+                  type: string
+                  format: date
+                description:
+                  type: string
+      responses:
+        200:
+          description: Expense updated
