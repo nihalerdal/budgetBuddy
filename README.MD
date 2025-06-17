@@ -10,26 +10,37 @@ A full-stack expense tracking application that allows users to manage their budg
 npm install && npm start
 ```
 
-#### Database Connection
+####🌱 Environment Setup
+1.Create a .env file in the root directory.
+2.Add your MongoDB connection string:
+```
+MONGO_URI=your_mongo_connection_string
+```
+####🧩 Features
+- User Authentication (Register & Login)
+- Add, Edit, and Delete Expenses
+- Filter by Category and Date
+- Backend Validation with Mongoose
+- Protected Routes with JWT
+- API Documentation with Swagger
 
-1. Import connect.js
-2. Invoke in start()
-3. Setup .env in the root
-4. Add MONGO_URI with correct value
 
 #### Routers
 
-- auth.js
-- jobs.js
+- auth.js – User authentication routes
+- expenses.js – Expense-related CRUD routes
 
 #### User Model
+Includes validation for:
+- Name
+- Email (validated using regex)
+- Password (hashed with bcryptjs)
 
 Email Validation Regex
 
 ```regex
 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 ```
-
 #### Register User
 
 - Validate - name, email, password - with Mongoose
@@ -56,10 +67,10 @@ Email Validation Regex
 
 #### Security
 
-- helmet
-- cors
-- xss-clean
-- express-rate-limit
+- helmet – Secure HTTP headers
+- cors – Cross-origin resource sharing
+- xss-clean – Prevent XSS attacks
+- express-rate-limit – Limit repeated requests
 
 Swagger UI
 
