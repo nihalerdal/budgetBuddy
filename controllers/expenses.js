@@ -34,10 +34,18 @@ const getExpense = async (req, res, next) => {
 
 const createExpense = async (req, res, next) => {
   try {
+    const { title, amount, mainCategory, subCategory } = req.body;
+
+    if (!title || !amount || !mainCategory || !subCategory) {
+      throw new BadRequestError(
+        "Title, amount, mainCategory, or subCategory can not be empty"
+      );
+    }
+
     req.body.createdBy = req.user.userId;
     const expense = await Expense.create(req.body);
     res.status(StatusCodes.CREATED).json({ expense });
-  } catch (error){
+  } catch (error) {
     next(error);
   }
 };

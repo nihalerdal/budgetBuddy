@@ -21,5 +21,16 @@ export const handleLoginRegister = () => {
 };
 
 export const showLoginRegister = () => {
-  setDiv(loginRegisterDiv);
+  const introSection = document.getElementById("intro-section");
+  if (introSection) {
+    introSection.style.display = "block";
+  }
+  const loginDiv = document.getElementById("logon-div");
+  const registerDiv = document.getElementById("register-div");
+  const logonRegister = document.getElementById("logon-register");
+
+  if (loginDiv) loginDiv.style.display = "none";
+  if (registerDiv) registerDiv.style.display = "none";
+  if (logonRegister) logonRegister.style.display = "block";
+  
 };

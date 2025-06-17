@@ -9,8 +9,12 @@ let description = null;
 let mainCategory = null;
 let subCategory = null;
 let addingExpense = null;
+let editCancel = null;
 
 export const handleAddEdit = () => {
+  const introSection = document.getElementById("intro-section");
+  if (introSection) introSection.style.display = "none";
+
   addEditDiv = document.getElementById("edit-expense");
   title = document.getElementById("title");
   amount = document.getElementById("amount");
@@ -19,10 +23,10 @@ export const handleAddEdit = () => {
   mainCategory = document.getElementById("mainCategory");
   subCategory = document.getElementById("subCategory");
   addingExpense = document.getElementById("adding-expense");
-  const editCancel = document.getElementById("edit-cancel");
+  editCancel = document.getElementById("edit-cancel");
 
   addEditDiv.addEventListener("click", async (e) => {
-    if (inputEnabled && e.target.nodeName === "BUTTON") {
+    if (e.target.nodeName === "BUTTON") {
       if (e.target === addingExpense) {
         enableInput(false);
 
@@ -35,14 +39,11 @@ export const handleAddEdit = () => {
           subCategory: subCategory.value,
         };
 
-        let method = "POST";
-        let url = "/api/v1/expenses";
         const expenseId = addEditDiv.dataset.id;
-
-        if (addingExpense.textContent.toLowerCase().includes("update")) {
-          method = "PATCH";
-          url = `/api/v1/expenses/${expenseId}`;
-        }
+        const method = expenseId ? "PATCH" : "POST";
+        const url = expenseId
+          ? `/api/v1/expenses/${expenseId}`
+          : "/api/v1/expenses";
 
         try {
           const res = await fetch(url, {
@@ -70,27 +71,44 @@ export const handleAddEdit = () => {
             mainCategory.value = "";
             subCategory.value = "";
             addEditDiv.dataset.id = "";
+            addingExpense.textContent = "Add Expense";
 
-            showExpenses();
+             await showExpenses();
+             setDiv(document.getElementById("expenses"));
+            console.log(
+              "Calling setDiv with:",
+              document.getElementById("expenses")
+            );
           } else {
-            message.textContent = result.msg || "Failed to save expense.";
+            if (message) {
+              message.textContent = result.msg || "Failed to save expense.";
+            }
           }
         } catch (err) {
           console.log(err);
-          message.textContent = "A communication error occurred.";
+          if (message) {
+            message.textContent = "A communication error occurred.";
+          }
         }
 
         enableInput(true);
       } else if (e.target === editCancel) {
-        addEditDiv.dataset.id = ""; // Clear ID on cancel
-        showExpenses();
+        addEditDiv.dataset.id = "";
+        addingExpense.textContent = "Add Expense";
+        await showExpenses();
+        setDiv(document.getElementById("expenses"));
+        enableInput(true);
       }
     }
   });
 };
 
 export const showAddEdit = async (expenseId) => {
-  message.textContent = "";
+  const introSection = document.getElementById("intro-section");
+  if (introSection) introSection.style.display = "none";
+  if (message) {
+    message.textContent = "";
+  }
 
   if (!expenseId) {
     // Add mode
@@ -132,12 +150,14 @@ export const showAddEdit = async (expenseId) => {
         setDiv(addEditDiv);
       } else {
         message.textContent = "The expense entry was not found.";
-        showExpenses();
+        await showExpenses();
+         setDiv(document.getElementById("expenses"));
       }
     } catch (err) {
       console.log(err);
       message.textContent = "A communication error occurred.";
-      showExpenses();
+      await showExpenses();
+       setDiv(document.getElementById("expenses"));
     }
 
     enableInput(true);
