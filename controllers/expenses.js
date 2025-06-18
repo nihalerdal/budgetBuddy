@@ -4,14 +4,22 @@ const { BadRequestError, NotFoundError } = require("../errors");
 
 const getAllExpenses = async (req, res, next) => {
   try {
-    const expenses = await Expense.find({ createdBy: req.user.userId }).sort(
-      "createdAt"
-    );
-    res.status(StatusCodes.OK).json({ expenses, count: expenses.length });
+    const { page = 1, limit = 5 } = req.query; // default 1. sayfa, 5 item
+    const skip = (page - 1) * limit;
+
+    const expenses = await Expense.find({ createdBy: req.user.userId })
+      .sort("createdAt")
+      .skip(skip)
+      .limit(Number(limit));
+
+    const total = await Expense.countDocuments({ createdBy: req.user.userId });
+
+    res.status(StatusCodes.OK).json({ expenses, total, page: Number(page), pages: Math.ceil(total / limit) });
   } catch (error) {
     next(error);
   }
 };
+
 
 const getExpense = async (req, res, next) => {
   try {

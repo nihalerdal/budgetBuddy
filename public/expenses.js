@@ -14,6 +14,10 @@ let expensesTable = null;
 let expensesTableHeader = null;
 let expensesTbody = null;
 
+let currentPage = 1;
+let totalPages = 1;
+const limit = 7;
+
 export const handleExpenses = () => {
   expensesDiv = document.getElementById("expenses");
   expensesTable = document.getElementById("expenses-table");
@@ -40,11 +44,30 @@ export const handleExpenses = () => {
   });
 };
 
+  const prevBtn = document.getElementById("prev-page");
+  const nextBtn = document.getElementById("next-page");
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        showExpenses();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        showExpenses();
+      }
+    });
+  }
+
 export const showExpenses = async () => {
   setDiv(expensesDiv);
   expensesTbody = document.getElementById("expenses-tbody");
   try {
-    const res = await fetch("/api/v1/expenses", {
+    const res = await fetch(`/api/v1/expenses?page=${currentPage}&limit=${limit}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -58,6 +81,8 @@ export const showExpenses = async () => {
     }
 
     console.log("Fetched expenses:", data.expenses);
+    totalPages = data.pages;
+    document.getElementById("page-number").textContent = `Page ${data.page} of ${totalPages}`;
     renderExpenses(data.expenses);
   } catch (err) {
     console.error(err);
