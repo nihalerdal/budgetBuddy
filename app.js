@@ -16,7 +16,7 @@ app.use(express.static("public"));
 //swagger
 const swaggerDocument =
   process.env.NODE_ENV === "production"
-    ? YAML.load("./swagger-prod.yaml")
+    ? YAML.load("./swaggerProd.yaml")
     : YAML.load("./swagger.yaml");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
