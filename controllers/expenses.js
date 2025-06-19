@@ -4,7 +4,7 @@ const { BadRequestError, NotFoundError } = require("../errors");
 
 const getAllExpenses = async (req, res, next) => {
   try {
-    const { page = 1, limit = 5 } = req.query; // default 1. sayfa, 5 item
+    const { page = 1, limit = 5 } = req.query; 
     const skip = (page - 1) * limit;
 
     const expenses = await Expense.find({ createdBy: req.user.userId })
