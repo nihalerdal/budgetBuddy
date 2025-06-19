@@ -14,8 +14,17 @@ const app = express();
 app.use(express.static("public"));
 
 //swagger
-const swaggerDocument = YAML.load("./swagger.yaml");
+const swaggerDocument =
+  process.env.NODE_ENV === "production"
+    ? YAML.load("./swagger-prod.yaml")
+    : YAML.load("./swagger.yaml");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+if (process.env.NODE_ENV === "production") {
+  console.log("Running in production mode");
+} else {
+  console.log("Running in development mode");
+}
 
 //connectDB
 const connectDB = require("./db/connect");
@@ -49,7 +58,7 @@ app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
-console.log("Using port:", port);  
+console.log("Using port:", port);
 
 const start = async () => {
   try {
