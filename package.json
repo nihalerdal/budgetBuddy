@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production node app.js"
+    "start": "NODE_ENV=production node app.js",
+    "test": "NODE_ENV=test mocha tests/*.js --timeout 5000 --exit"
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +28,14 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.9"
+    "@faker-js/faker": "^9.8.0",
+    "chai": "^5.2.0",
+    "chai-http": "^5.1.2",
+    "factory-bot": "^6.3.1",
+    "install": "^0.13.0",
+    "mocha": "^11.7.1",
+    "nodemon": "^2.0.9",
+    "npm": "^10.9.3",
+    "puppeteer": "^24.10.2"
   }
 }

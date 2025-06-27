@@ -60,9 +60,14 @@ app.use(errorHandlerMiddleware);
 const port = process.env.PORT || 3000;
 console.log("Using port:", port);
 
+const mongoUri =
+  process.env.NODE_ENV === "test"
+    ? process.env.MONGO_URI_TEST
+    : process.env.MONGO_URI;
+
 const start = async () => {
   try {
-    await connectDB(process.env.MONGO_URI);
+    await connectDB(mongoUri);
     app.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );
