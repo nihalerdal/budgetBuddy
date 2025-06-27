@@ -13,6 +13,16 @@ const express = require("express");
 const app = express();
 app.use(express.static("public"));
 
+// Fix content-type header for tests (for rendered HTML vs API)
+app.use((req, res, next) => {
+  if (req.path === "/multiply") {
+    res.set("Content-Type", "application/json");
+  } else {
+    res.set("Content-Type", "text/html");
+  }
+  next();
+});
+
 //swagger
 const swaggerDocument =
   process.env.NODE_ENV === "production"
@@ -33,6 +43,21 @@ const authenticateUser = require("./middleware/authentication.js");
 //routers
 const authRouter = require("./routes/auth");
 const expensesRouter = require("./routes/expenses");
+
+app.get("/multiply", (req, res) => {
+  let first = Number(req.query.first);
+  let second = Number(req.query.second);
+  let result = first * second;
+
+  if (isNaN(result)) {
+    result = "NaN";
+  } else if (result == null) {
+    result = "null";
+  }
+
+  res.json({ result });
+});
+
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -58,12 +83,16 @@ app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
-console.log("Using port:", port);
+const mongoURL =
+  process.env.NODE_ENV === "test"
+    ? process.env.MONGO_URI_TEST
+    : process.env.MONGO_URI;
 
-const start = async () => {
+
+const start = () => {
   try {
-    await connectDB(process.env.MONGO_URI);
-    app.listen(port, () =>
+    require("./db/connect")(mongoURL);
+    return app.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );
   } catch (error) {
@@ -72,3 +101,5 @@ const start = async () => {
 };
 
 start();
+
+module.exports = { app };
