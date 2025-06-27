@@ -1,8 +1,8 @@
 const { app } = require("../app");
 const Expense = require("../models/Expense");
-const { seed_db, testUserPassword } = require("../util/seed_db");
-const get_chai = require("../util/get_chai");
-const { factory } = require("../util/seed_db");
+const { seed_db, testUserPasswords } = require("../utils/seed_db");
+const get_chai = require("../utils/get_chai");
+const { factory } = require("../utils/seed_db");
 
 describe("Expense CRUD operations", function () {
   before(async function () {
